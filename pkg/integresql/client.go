@@ -13,6 +13,7 @@ import (
 	"path"
 
 	"github.com/allaboutapps/integresql-client/pkg/models"
+	_ "github.com/lib/pq"
 )
 
 var (
