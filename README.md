@@ -23,7 +23,7 @@ Client library for interacting with a [`IntegreSQL` server](https://github.com/a
 Install the `IntegreSQL` client for Go using `go get`:
 
 ```bash
-go get github.com/allaboutapps/integresql-client-go/pkg/client
+go get github.com/allaboutapps/integresql-client-go
 ```
 
 ## Configuration
