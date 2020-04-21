@@ -44,8 +44,8 @@ Setting up the `IntegreSQL` client, initializing a template and retrieving a tes
 package yourpkg
 
 import (
-    "github.com/allaboutapps/integresql-client/pkg/integresql"
-    "github.com/allaboutapps/integresql-client/pkg/util"
+    "github.com/allaboutapps/integresql-client-go"
+    "github.com/allaboutapps/integresql-client-go/pkg/util"
 )
 
 func doStuff() error {

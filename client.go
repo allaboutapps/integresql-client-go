@@ -12,7 +12,7 @@ import (
 	"net/url"
 	"path"
 
-	"github.com/allaboutapps/integresql-client/pkg/models"
+	"github.com/allaboutapps/integresql-client-go/pkg/models"
 	_ "github.com/lib/pq"
 )
 

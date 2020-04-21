@@ -1,6 +1,6 @@
 package integresql
 
-import "github.com/allaboutapps/integresql-client/pkg/util"
+import "github.com/allaboutapps/integresql-client-go/pkg/util"
 
 type ClientConfig struct {
 	BaseURL    string

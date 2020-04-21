@@ -7,7 +7,7 @@ format:
 	go fmt
 
 gobuild:
-	go build ./pkg/integresql
+	go build .
 
 gobuild-cli:
 	go build -o ./bin/integresql-cli ./cmd/cli
