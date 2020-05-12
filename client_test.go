@@ -32,7 +32,38 @@ func TestClientInitializeTemplate(t *testing.T) {
 	}
 }
 
-func TestClientFinalzeTemplate(t *testing.T) {
+func TestClientDiscardTemplate(t *testing.T) {
+	ctx := context.Background()
+
+	c, err := DefaultClientFromEnv()
+	if err != nil {
+		t.Fatalf("failed to create client: %v", err)
+	}
+
+	if err := c.ResetAllTracking(ctx); err != nil {
+		t.Fatalf("failed to reset all test pool tracking: %v", err)
+	}
+
+	hash := "hashinghash2"
+
+	if _, err := c.InitializeTemplate(ctx, hash); err != nil {
+		t.Fatalf("failed to initialize template: %v", err)
+	}
+
+	if err := c.DiscardTemplate(ctx, hash); err != nil {
+		t.Fatalf("failed to discard template: %v", err)
+	}
+
+	if _, err := c.InitializeTemplate(ctx, hash); err != nil {
+		t.Fatalf("failed to reinitialize template: %v", err)
+	}
+
+	if err := c.FinalizeTemplate(ctx, hash); err != nil {
+		t.Fatalf("failed to refinalize template: %v", err)
+	}
+}
+
+func TestClientFinalizeTemplate(t *testing.T) {
 	ctx := context.Background()
 
 	c, err := DefaultClientFromEnv()

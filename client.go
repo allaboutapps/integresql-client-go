@@ -148,6 +148,29 @@ func (c *Client) SetupTemplateWithDBClient(ctx context.Context, hash string, ini
 	}
 }
 
+func (c *Client) DiscardTemplate(ctx context.Context, hash string) error {
+	req, err := c.newRequest(ctx, "DELETE", fmt.Sprintf("/templates/%s", hash), nil)
+	if err != nil {
+		return err
+	}
+
+	resp, err := c.do(req, nil)
+	if err != nil {
+		return err
+	}
+
+	switch resp.StatusCode {
+	case http.StatusNoContent:
+		return nil
+	case http.StatusNotFound:
+		return ErrTemplateNotFound
+	case http.StatusServiceUnavailable:
+		return ErrManagerNotReady
+	default:
+		return fmt.Errorf("received unexpected HTTP status %d (%s)", resp.StatusCode, resp.Status)
+	}
+}
+
 func (c *Client) FinalizeTemplate(ctx context.Context, hash string) error {
 	req, err := c.newRequest(ctx, "PUT", fmt.Sprintf("/templates/%s", hash), nil)
 	if err != nil {
