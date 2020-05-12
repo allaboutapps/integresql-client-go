@@ -20,6 +20,7 @@ var (
 	ErrManagerNotReady            = errors.New("manager not ready")
 	ErrTemplateAlreadyInitialized = errors.New("template is already initialized")
 	ErrTemplateNotFound           = errors.New("template not found")
+	ErrDatabaseDiscarded          = errors.New("database was discarded (typically failed during initialize/finalize)")
 	ErrTestNotFound               = errors.New("test database not found")
 )
 
@@ -212,6 +213,8 @@ func (c *Client) GetTestDatabase(ctx context.Context, hash string) (models.TestD
 		return test, nil
 	case http.StatusNotFound:
 		return test, ErrTemplateNotFound
+	case http.StatusGone:
+		return test, ErrDatabaseDiscarded
 	case http.StatusServiceUnavailable:
 		return test, ErrManagerNotReady
 	default:
@@ -272,9 +275,16 @@ func (c *Client) do(req *http.Request, v interface{}) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	// body must always be closed
 	defer resp.Body.Close()
 
 	if resp.StatusCode == http.StatusAccepted || resp.StatusCode == http.StatusNoContent {
+		return resp, nil
+	}
+
+	// if the provided v pointer is nil we cannot unmarschal the body to anything
+	if v == nil {
 		return resp, nil
 	}
 
