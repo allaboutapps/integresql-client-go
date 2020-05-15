@@ -1,4 +1,4 @@
-module github.com/allaboutapps/integresql-client
+module github.com/allaboutapps/integresql-client-go
 
 go 1.14
 

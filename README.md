@@ -23,7 +23,7 @@ Client library for interacting with a [`IntegreSQL` server](https://github.com/a
 Install the `IntegreSQL` client for Go using `go get`:
 
 ```bash
-go get github.com/allaboutapps/integresql-client-go/pkg/client
+go get github.com/allaboutapps/integresql-client-go
 ```
 
 ## Configuration
@@ -44,8 +44,8 @@ Setting up the `IntegreSQL` client, initializing a template and retrieving a tes
 package yourpkg
 
 import (
-    "github.com/allaboutapps/integresql-client/pkg/integresql"
-    "github.com/allaboutapps/integresql-client/pkg/util"
+    "github.com/allaboutapps/integresql-client-go"
+    "github.com/allaboutapps/integresql-client-go/pkg/util"
 )
 
 func doStuff() error {

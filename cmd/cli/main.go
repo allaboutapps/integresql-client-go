@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/allaboutapps/integresql-client/pkg/integresql"
+	"github.com/allaboutapps/integresql-client-go"
 )
 
 func main() {

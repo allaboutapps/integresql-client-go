@@ -1,7 +1,7 @@
 version: "3.4"
 services:
 
-  service:
+  integresql-client:
     build:
       context: .
       target: development
@@ -58,5 +58,30 @@ services:
       PGHOST: *PSQL_HOST
       PGPORT: *PSQL_PORT
 
+# # Only relevant if you want to attach a running integresql docker-compose network
+# # Typically this is running on the "integresql_default" network
+#   integresql-client:
+#     build:
+#       context: .
+#       target: development
+#     working_dir: /app
+#     volumes:
+#       - .:/app #:delegated
+#     environment: &SERVICE_ENV
+#       PGDATABASE: &PSQL_DBNAME "sample"
+#       PGUSER: &PSQL_USER "dbuser"
+#       PGPASSWORD: &PSQL_PASS "testpass"
+#       PGHOST: &PSQL_HOST "postgres"
+#       PGPORT: &PSQL_PORT "5432"
+#       PGSSLMODE: &PSQL_SSLMODE "disable"
+#     networks:
+#       - integresql_default
+
 volumes:
   pgvolume: # declare a named volume to persist DB data
+
+# # Only relevant if you want to attach a running integresql docker-compose network
+# # Typically this is running on the "integresql_default" network
+# networks:
+#   integresql_default:
+#     external: true
