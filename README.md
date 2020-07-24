@@ -18,9 +18,11 @@ Client library for interacting with a [`IntegreSQL` server](https://github.com/a
 
 ## Background
 
+See [IntegreSQL: Background](https://github.com/allaboutapps/integresql#background)
+
 ## Install
 
-Install the `IntegreSQL` client for Go using `go get`:
+Install the `IntegreSQL` client for Go using `go get` or by simply importing the library in your testing code (go modules, see below):
 
 ```bash
 go get github.com/allaboutapps/integresql-client-go
@@ -31,14 +33,16 @@ go get github.com/allaboutapps/integresql-client-go
 The `IntegreSQL` client library requires little configuration which can either be passed via the `ClientConfig` struct or parsed from environment variables automatically. The following settings are available:
 
 | Description                                                | Environment variable            | Default                        | Required |
-|------------------------------------------------------------|---------------------------------|--------------------------------|----------|
+| ---------------------------------------------------------- | ------------------------------- | ------------------------------ | -------- |
 | IntegreSQL: base URL of server `http://127.0.0.1:5000/api` | `INTEGRESQL_CLIENT_BASE_URL`    | `"http://integresql:5000/api"` |          |
 | IntegreSQL: API version of server                          | `INTEGRESQL_CLIENT_API_VERSION` | `"v1"`                         |          |
 
 
 ## Usage
 
-Setting up the `IntegreSQL` client, initializing a template and retrieving a test database:
+If you want to take a look on how we integrate IntegreSQL - 🤭 - please just try our [go-starter](https://github.com/allaboutapps/go-starter) project or take a look at our [testing setup code](https://github.com/allaboutapps/go-starter/blob/master/internal/test/testing.go). 
+
+In general setting up the `IntegreSQL` client, initializing a PostgreSQL template (migrate + seed) and retrieving a PostgreSQL test database goes like this:
 
 ```go
 package yourpkg
@@ -54,6 +58,7 @@ func doStuff() error {
         return err
     }
 
+    // compute a hash over all database related files in your workspace (warm template cache)
     hash, err := hash.GetTemplateHash("/app/scripts/migrations", "/app/internal/fixtures/fixtures.go")
     if err != nil {
         return err
@@ -64,7 +69,8 @@ func doStuff() error {
         return err
     }
 
-    // Use template database config received to initialize template, e.g. by applying migrations and fixtures
+    // Use template database config received to initialize template
+    // e.g. by applying migrations and fixtures
 
     if err := c.FinalizeTemplate(context.TODO(), hash); err != nil {
         return err
