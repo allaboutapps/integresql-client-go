@@ -15,10 +15,25 @@ type DatabaseConfig struct {
 	AdditionalParams map[string]string `json:"additionalParams,omitempty"` // Optional additional connection parameters mapped into the connection string
 }
 
+func quoteConfigParameter(s string) string {
+	if s == "" {
+		return "''"
+	}
+	if !strings.Contains(s, " ") {
+		return s
+	}
+	return "'" + s + "'"
+}
+
 // Generates a connection string to be passed to sql.Open or equivalents, assuming Postgres syntax
 func (c DatabaseConfig) ConnectionString() string {
 	var b strings.Builder
-	b.WriteString(fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s", c.Host, c.Port, c.Username, c.Password, c.Database))
+	b.WriteString(fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s",
+		quoteConfigParameter(c.Host),
+		c.Port,
+		quoteConfigParameter(c.Username),
+		quoteConfigParameter(c.Password),
+		quoteConfigParameter(c.Database)))
 
 	if _, ok := c.AdditionalParams["sslmode"]; !ok {
 		b.WriteString(" sslmode=disable")
@@ -33,7 +48,7 @@ func (c DatabaseConfig) ConnectionString() string {
 		sort.Strings(params)
 
 		for _, param := range params {
-			fmt.Fprintf(&b, " %s=%s", param, c.AdditionalParams[param])
+			fmt.Fprintf(&b, " %s=%s", param, quoteConfigParameter(c.AdditionalParams[param]))
 		}
 	}
 
