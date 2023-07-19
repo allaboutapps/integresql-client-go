@@ -245,8 +245,8 @@ func (c *Client) ReturnTestDatabase(ctx context.Context, hash string, id int) er
 	}
 }
 
-func (c *Client) RestoreTestDatabase(ctx context.Context, hash string, id int) error {
-	req, err := c.newRequest(ctx, "POST", fmt.Sprintf("/templates/%s/tests/%d/restore", hash, id), nil)
+func (c *Client) RecreateTestDatabase(ctx context.Context, hash string, id int) error {
+	req, err := c.newRequest(ctx, "POST", fmt.Sprintf("/templates/%s/tests/%d/recreate", hash, id), nil)
 	if err != nil {
 		return err
 	}
