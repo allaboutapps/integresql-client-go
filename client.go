@@ -12,8 +12,9 @@ import (
 	"net/url"
 	"path"
 
-	"github.com/allaboutapps/integresql-client-go/pkg/models"
 	_ "github.com/lib/pq"
+
+	"github.com/allaboutapps/integresql-client-go/pkg/models"
 )
 
 var (
@@ -61,6 +62,10 @@ func NewClient(config ClientConfig) (*Client, error) {
 
 func DefaultClientFromEnv() (*Client, error) {
 	return NewClient(DefaultClientConfigFromEnv())
+}
+
+func (c *Client) SetClient(client *http.Client) {
+	c.client = client
 }
 
 func (c *Client) ResetAllTracking(ctx context.Context) error {
