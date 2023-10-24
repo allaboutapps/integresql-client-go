@@ -68,6 +68,10 @@ func (c *Client) SetClient(client *http.Client) {
 	c.client = client
 }
 
+func (c *Client) Close() {
+	c.client.CloseIdleConnections()
+}
+
 func (c *Client) ResetAllTracking(ctx context.Context) error {
 	req, err := c.newRequest(ctx, "DELETE", "/admin/templates", nil)
 	if err != nil {
