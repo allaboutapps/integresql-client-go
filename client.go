@@ -245,6 +245,29 @@ func (c *Client) ReturnTestDatabase(ctx context.Context, hash string, id int) er
 	}
 }
 
+func (c *Client) RecreateTestDatabase(ctx context.Context, hash string, id int) error {
+	req, err := c.newRequest(ctx, "POST", fmt.Sprintf("/templates/%s/tests/%d/recreate", hash, id), nil)
+	if err != nil {
+		return err
+	}
+
+	resp, err := c.do(req, nil)
+	if err != nil {
+		return err
+	}
+
+	switch resp.StatusCode {
+	case http.StatusNoContent:
+		return nil
+	case http.StatusNotFound:
+		return ErrTemplateNotFound
+	case http.StatusServiceUnavailable:
+		return ErrManagerNotReady
+	default:
+		return fmt.Errorf("received unexpected HTTP status %d (%s)", resp.StatusCode, resp.Status)
+	}
+}
+
 func (c *Client) newRequest(ctx context.Context, method string, endpoint string, body interface{}) (*http.Request, error) {
 	u := c.baseURL.ResolveReference(&url.URL{Path: path.Join(c.baseURL.Path, endpoint)})
 
